@@ -1,49 +1,71 @@
 'use strict';
 
+import _ from 'lodash';
+
+
 class ServerlessPlugin {
   constructor(serverless, options) {
     this.serverless = serverless;
     this.options = options;
+    this.provider = this.serverless.getProvider('aws');
 
     this.commands = {
-      welcome: {
-        usage: 'Helps you start your first Serverless plugin',
-        lifecycleEvents: ['hello', 'world'],
-        options: {
-          message: {
-            usage:
-              'Specify the message you want to deploy ' +
-              '(e.g. "--message \'My Message\'" or "-m \'My Message\'")',
-            required: true,
-            shortcut: 'm',
-          },
-        },
+      deploy: {
+        lifecycleEvents: ['resources', 'functions'],
       },
+
+      finalize: {
+        lifecycleEvents: [
+          'cleanup',
+        ],
+      }
     };
 
     this.hooks = {
-      'before:welcome:hello': this.beforeWelcome.bind(this),
-      'welcome:hello': this.welcomeUser.bind(this),
-      'welcome:world': this.displayHelloMessage.bind(this),
-      'after:welcome:world': this.afterHelloWorld.bind(this),
+      'before:deploy:resources': this.beforeDeployResources,
+      'deploy:resources': this.deployResources,
+      'after:deploy:deploy': this.afterDeployFunctions.bind(this),
+      'before:package:finalize': this.addSnowflakeInvokePermission.bind(this),
+
+      // Deploy finalize inner lifecycle
+      'aws:deploy:finalize:cleanup': () => {
+        this.setupSnowflake.bind(this)
+        this.cleanupS3Bucket
+      }
     };
   }
 
-  beforeWelcome() {
-    this.serverless.cli.log('Hello from Serverless!');
+  addSnowflakeInvokePermission() {
+    this.serverless.cli.log('Adding permission to Snowflake for invoking API Gateway');
+
+    for (const method of _.values(this.serverless.service.provider.compiledCloudFormationTemplate.Resources)) {
+      if(method.Type && method.Type === 'AWS::ApiGateway::Method') {
+        method.
+      }
+    }
+
+    console.log(this.serverless.service.provider.compiledCloudFormationTemplate.Resources);
   }
 
-  welcomeUser() {
-    this.serverless.cli.log('Your message:');
+  beforeDeployResources() {
+    console.log('Before Deploy Resources');
   }
 
-  displayHelloMessage() {
-    this.serverless.cli.log(`${this.options.message}`);
+  deployResources() {
+    console.log('Deploy Resources');
   }
 
-  afterHelloWorld() {
-    this.serverless.cli.log('Please come again!');
+
+  afterDeployFunctions() {
+    this.serverless.cli.log('After Deploy Function');
   }
+
+
+  setupSnowflake() {
+    this.serverless.cli.log('Setting up Snowflake');
+
+  }
+
 }
 
 module.exports = ServerlessPlugin;
