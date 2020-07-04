@@ -1,0 +1,31 @@
+{
+  "name": "serverless-snowflake-external-function-plugin",
+  "version": "1.0.0",
+  "description": "Serverless plugin for Snowflake External Functions",
+  "main": "lib/index.js",
+  "dependencies": {
+    "bluebird": "^3.7.2",
+    "lodash": "^4.17.15",
+    "snowflake-sdk": "^1.5.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/starschema/serverless-snowflake-external-function-plugin.git"
+  },
+  "keywords": [
+    "snowflake",
+    "serverless",
+    "external",
+    "pi"
+  ],
+  "author": "Tamas Foldi",
+  "license": "BSD-3-Clause",
+  "bugs": {
+    "url": "https://github.com/starschema/serverless-snowflake-external-function-plugin/issues"
+  },
+  "homepage": "https://github.com/starschema/serverless-snowflake-external-function-plugin#readme"
+}
