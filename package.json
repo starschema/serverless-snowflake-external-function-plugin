@@ -1,6 +1,6 @@
 {
   "name": "serverless-snowflake-external-function-plugin",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Serverless plugin for Snowflake External Functions",
   "main": "lib/index.js",
   "dependencies": {
